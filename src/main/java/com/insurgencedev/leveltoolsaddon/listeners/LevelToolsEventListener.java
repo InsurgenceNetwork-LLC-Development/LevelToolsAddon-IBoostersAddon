@@ -12,7 +12,7 @@ public final class LevelToolsEventListener implements Listener {
     public void onReceive(LevelToolsXPIncreaseEvent event) {
         final String TYPE = "Tool";
         final String NAMESPACE = "LEVEL_TOOLS";
-        final double[] totalMulti = {1};
+        final double[] totalMulti = {0};
 
         BoosterFindResult pResult = IBoosterAPI.INSTANCE.getCache(event.getPlayer()).getBoosterDataManager().findActiveBooster(TYPE, NAMESPACE);
         if (pResult instanceof BoosterFindResult.Success boosterResult) {
@@ -24,7 +24,9 @@ public final class LevelToolsEventListener implements Listener {
             return null;
         }, () -> null);
 
-        event.setNewXp(calculateAmount(event.getNewXp(), totalMulti[0]));
+        if (totalMulti[0] > 0) {
+            event.setNewXp(calculateAmount(event.getNewXp(), totalMulti[0]));
+        }
     }
 
     private long calculateAmount(double amount, double multi) {
